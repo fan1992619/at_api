@@ -73,4 +73,4 @@ class OperationExcel:
 
 if __name__ == '__main__':
 	opers = OperationExcel()
-	print opers.get_lines()
+	print opers.write_value(1,11,'pass')

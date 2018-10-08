@@ -7,7 +7,7 @@ import json
 url = 'http://api.test.initialvc.com/v1/projects/22/articles'
 header={
     'Accept': '*/*',
-    'authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC5pbml0aWFsdmMuY29tXC92MVwvYWNjb3VudFwvc2lnbmluIiwiaWF0IjoxNTMxMzc4ODA0LCJleHAiOjE1NjI5MTQ4MDQsIm5iZiI6MTUzMTM3ODgwNCwianRpIjoiN1FKNHVFVUl5ckFNRER3SyIsInN1YiI6NDIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.ukpUMBy66JYx069TPqwY7Gu2I6g6pkCof6WpWOMebAY',
+    'authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC5pbml0aWFsdmMuY29tXC92MVwvYWNjb3VudFwvc2lnbmluIiwiaWF0IjoxNTMzNjI3NDI4LCJleHAiOjE1NjUxNjM0MjgsIm5iZiI6MTUzMzYyNzQyOCwianRpIjoiam02a1FBZ0g3QzU1OUt5diIsInN1YiI6MzMsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.kANEjT7ADi_1lQ2T2mtzjdt4QD0tXTAEdx2Sx1MJNP0',
     'Content-Type': 'application/x-www-form-urlencoded',
 }
 
@@ -15,10 +15,10 @@ def post_main(url,data,header):
     res=requests.post(url=url,data=data,headers=header).content
     return res
 
-for i in range(2,13):
+for i in range(10):
     data = {
-        'title': '了解行业前沿信息{},「活动家」提供2018年区块链'.format(i),
-        'link': 'http://svip.gp241.com/baidu/al/13{}'.format(i),
+        'title': '42个行业 上篇{} '.format(i),
+        'link': 'https://www.jinse.com/bitcoin/223741{}.html'.format(i),
         'type': '1'
     }
     res = post_main(url, data, header)

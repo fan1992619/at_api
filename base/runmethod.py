@@ -1,20 +1,23 @@
-#coding:utf-8
+# coding:utf-8
 import requests
 import json
+import time
 #解决ssl证书报错导入以下包
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-#verify=False  忽略https产生的ssl报错
+# from requests.packages.urllib3.exceptions import InsecureRequestWarning
+# requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+# verify=False  忽略https产生的ssl报错
 import random
-i=random.randint(1,10000)
+i = random.randint(1, 10000)
+
+
 class RunMethod:
-    #定义一个post方法
+    # 定义一个post方法
 	def post_main(self,url,data=None,header=None):
 		res = None
 		if header !=None:
 			res = requests.post(url=url,data=data,headers=header,verify=False).json()
 			if res['code']==-204:
-				print "文章重复，false"
+				print ("文章重复，false")
 			elif res['code']!=0:
 				res=self.delete_main(url,data,header)
 				res=requests.post(url=url,data=data,headers=header,verify=False).json()
@@ -25,8 +28,16 @@ class RunMethod:
 	def get_main(self,url,data=None,header=None):
 		res = None
 		if header !=None:
+			res = requests.get(url=url, data=data, headers=header, verify=False)
+			print('-'*80)
+			print(res)
+			time.sleep(5)
 			res = requests.get(url=url,data=data,headers=header,verify=False).json()
 		else:
+			res = requests.get(url=url, data=data, verify=False)
+			print('-' * 80)
+			print(res.content.decode())
+			time.sleep(5)
 			res = requests.get(url=url,data=data,verify=False).json()
 		return res
 	#定义一个delete方法
@@ -49,17 +60,17 @@ class RunMethod:
 		return res
 if __name__ == '__main__':
     run=RunMethod()
-    url='https://api.at.top/v1/projects/1540/articles'
-    data = {
-        # 'phone': '18782610762',
-        # 'verifycode': '158266'
-        # 'name':'fy'
-		'title': '好比我先知',
-		'link': 'www.a1t{}1a.top'.format(i),
-		'type': '7'
-     }
-    header = {
-        'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTUzMDY4MjM5NSwiZXhwIjoxNTYyMjE4Mzk1LCJuYmYiOjE1MzA2ODIzOTUsImp0aSI6IkZSWEZ3aFRSQ242UVpNZzAiLCJzdWIiOjMzLCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.dEwtzuJJSHmoHNP7xqAJ5GWcBJF9yhgP6twnwbEdpuw'
-    }
-    print run.run_main('post',url,header,data)
+    url='https://api.at.top/v1/share?project=22'
+    # data = {
+    #     # 'phone': '18782610762',
+    #     # 'verifycode': '158266'
+    #     # 'name':'fy'
+		# 'title': '好比我先知',
+		# 'link': 'www.a1t{}1a.top'.format(i),
+		# 'type': '7'
+    #  }
+    # header = {
+    #     'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTUzMDY4MjM5NSwiZXhwIjoxNTYyMjE4Mzk1LCJuYmYiOjE1MzA2ODIzOTUsImp0aSI6IkZSWEZ3aFRSQ242UVpNZzAiLCJzdWIiOjMzLCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.dEwtzuJJSHmoHNP7xqAJ5GWcBJF9yhgP6twnwbEdpuw'
+    # }
+    run.run_main('get',url)
 

@@ -70,9 +70,15 @@ class GetData:
 	def get_expcet_data(self,row):
 		col = int(data_config.get_expect())
 		expect = self.opera_excel.get_cell_value(row,col)
+		expect = expect.encode('utf-8')
+		# print type(expect)
 		if expect == '':
 			return None
 		return expect
+	#写入数据
+	def write_result(self,row,value):
+		col = int(data_config.get_result())
+		self.opera_excel.write_value(row,col,value)
 	#获取caseid
 	def get_number_id(self,row):
 		col=int(data_config.get_id())
@@ -80,4 +86,4 @@ class GetData:
 		return ID
 if __name__ == '__main__':
 	get_data=GetData()
-	print get_data.get_number_id(2)
+	print get_data.get_expcet_data(1)

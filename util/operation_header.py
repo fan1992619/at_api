@@ -19,7 +19,7 @@ class OperationHeader:
         # url = self.get_response_url()
         cookie = requests.post(url=url,data=data).json()
         return  cookie['data']['access_token']
-        print cookie
+        print(cookie)
     def write_cookie(self):
         cookie = requests.utils.dict_from_cookiejar(self.get_cookie())
         op_json = OperetionJson()

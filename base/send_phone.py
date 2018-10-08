@@ -14,6 +14,6 @@ header={
 def post_main(url,data,header):
     res=requests.post(url=url,data=data,headers=header).json()
     return res
-print post_main(url,data,header)
+print (post_main(url,data,header))
 
 

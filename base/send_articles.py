@@ -6,8 +6,6 @@ from data.get_data_sign import GetData
 class Run:
     def __init__(self):
         self.data = GetData()
-
-
     def post_main(self,url,data,header):
         res=self.requests.post(url=url,data=data,headers=header)
         return res
@@ -28,8 +26,8 @@ class Run:
             'link': self.url,
             'type': '1'
         }
-        print data['title']
-        print link['link']
+        print (data['title'])
+        print (link['link'])
         header = {
             'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTUzMDY4MjM5NSwiZXhwIjoxNTYyMjE4Mzk1LCJuYmYiOjE1MzA2ODIzOTUsImp0aSI6IkZSWEZ3aFRSQ242UVpNZzAiLCJzdWIiOjMzLCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.dEwtzuJJSHmoHNP7xqAJ5GWcBJF9yhgP6twnwbEdpuw'
         }
