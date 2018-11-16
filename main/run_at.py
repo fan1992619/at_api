@@ -16,7 +16,7 @@ class RunTest:
         self.data = GetData()
     def post_main(self):
         rows = self.data.get_case_lines()
-        print rows
+        print(rows)
         for i in range(1,rows):
             telephone = int(self.data.get_phone(i))
             number = int(self.data.get_number(i))
@@ -26,9 +26,9 @@ class RunTest:
             'phone': telephone,
             'verifycode': number
             }
-            print data
+            print(data)
             res =requests.post(url=url, data=data, headers=header).json()
-            print '第%d次' % i,res
+            print('第%d次' % i,res)
             # return json.dumps(res,indent=2,sort_keys=True)
 if __name__ == '__main__':
     run=RunTest()

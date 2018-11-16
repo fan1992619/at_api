@@ -24,4 +24,4 @@ class OperetionJson:
 
 if __name__ == '__main__':
 	opjson = OperetionJson()
-	print opjson.get_data('articles')
+	print(opjson.get_data('articles'))

@@ -86,4 +86,4 @@ class GetData:
 		return ID
 if __name__ == '__main__':
 	get_data=GetData()
-	print get_data.get_expcet_data(1)
+	print(get_data.get_expcet_data(1))

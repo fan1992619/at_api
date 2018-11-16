@@ -1,6 +1,6 @@
 #coding:utf-8
-import sys
-sys.path.append("E:/www/ImoocInterface")
+# import sys
+# sys.path.append("E:/www/ImoocInterface")
 from base.runmethod import RunMethod
 from data.get_data import GetData
 from util.common_util import CommontUtil
@@ -37,6 +37,8 @@ class RunTest:
 					res = self.run_method.run_main(method,url,request_data)
 					print ('第%d次' %i,id,res)
 					if res['code']==0:
+						self.data.write_result(i, 'pass')
+					elif res.status_code==200:
 						self.data.write_result(i, 'pass')
 					else:
 						self.data.write_result(i, res)

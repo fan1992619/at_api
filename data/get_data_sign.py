@@ -26,6 +26,6 @@ class GetData:
 		return pid
 if __name__ == '__main__':
 	data=GetData()
-	print data.get_name(1)
+	print(data.get_name(1))
 
 
