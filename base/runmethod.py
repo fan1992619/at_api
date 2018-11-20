@@ -9,20 +9,28 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import random
 class RunMethod:
     # 定义一个post方法
-	def post_main(self,url,data=None,header=None):
+	def post_main(self,url,header=None,data=None):
 		res = None
 		if header !=None:
-			res = requests.post(url=url,data=data,headers=header,verify=False).json()
-			if res['code']==-204:
-				print ("文章重复，false")
-			elif res['code']!=0:
-				res=self.delete_main(url,data,header)
-				res=requests.post(url=url,data=data,headers=header,verify=False).json()
+			try:
+				res = requests.post(url=url,data=data,headers=header,verify=False).json()
+				if res['code']==-204:
+					print ("重复提交，false")
+					res=requests.delete(url=url,data=data,headers=header).json()
+				elif res['code']!=0:
+					res=self.delete_main(url,data,header)
+					res=requests.post(url=url,data=data,headers=header,verify=False).json()
+				elif res['code']==-2:
+					print(res)
+			except:
+				res = requests.post(url=url, data=data, headers=header, verify=False)
+				res=res.status_code
 		else:
 			res = requests.post(url=url,data=data,verify=False).json()
-		return res
+			time.sleep(2)
+		return json.dumps(res)
     #定义一个get方法
-	def get_main(self,url,data=None,header=None):
+	def get_main(self,url,header=None,data=None):
 		res = None
 		if header !=None:
 			try:
@@ -41,7 +49,7 @@ class RunMethod:
 		# print('-' * 80)
 			# print(res.content.decode())
 			# time.sleep(2)
-		return res
+		return json.dumps(res)
 	#定义一个delete方法
 	def delete_main(self,url,header=None,data=None):
 		res=None
@@ -49,23 +57,32 @@ class RunMethod:
 		if res['code']!=0:
 			res=self.post_main(url,data,header)
 			res=requests.delete(url=url,data=data,headers=header,verify=False).json()
-		return res
-	def run_main(self,method,url,data=None,header=None):
+		return json.dumps(res)
+	def run_main(self,method,url,header=None,data=None):
 		res = None
 		if method == 'post':
-			res = self.post_main(url,data,header)
+			res = self.post_main(url,header,data)
 		elif method=='delete':
-			res=self.delete_main(url,data,header)
+			res=self.delete_main(url,header,data)
 		else:
-			res = self.get_main(url,data,header)
+			res = self.get_main(url,header,data)
 		# return json.dumps(res,ensure_ascii=False)
 		return res
 if __name__ == '__main__':
 	run=RunMethod()
 	header={
-		'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjAxMDM2OCwiZXhwIjoxNTczNTQ2MzY4LCJuYmYiOjE1NDIwMTAzNjgsImp0aSI6Im1zcERIMWVaTDM5SG9mazkiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.0s8qGjniMd3INLbE9rg0NBiKXyp_b1K76M8ZyPrd_ZA'
+		'Host': 'api.at.top',
+		'Connection': 'Keep-Alive',
+		'Accept-Encoding': 'gzip',
+		'User-Agent': 'okhttp/3.8.1',
+		'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjY5NjkzMiwiZXhwIjoxNTc0MjMyOTMyLCJuYmYiOjE1NDI2OTY5MzIsImp0aSI6IlNxN01BajR3QUZIU0pUcHMiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.KDlYlvi7z50fKGSsIywDOhRhqZdgxtrkhWwqbtzz2iw',
+		'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
+		'getuiclientid': '5b9a0d6f110d2b136f9ca135d93fad06',
+		'platform': 'android',
+		'userid': '33',
+		'version': '2.1.0'
 	}
-	url='https://api.at.top/v1/user/profile?intro=%E4%BB%8A%E5%A4%A9%E6%98%9F%E6%9C%9F%E4%BA%94'
-	data={'intro':'今天星期六'}
-	print(run.run_main('post',url,data,header))
+	url='http://api.at.top/v1/6/articles'
+	data={"phone":"18782610762", "verifycode":"158266"}
+	print(run.run_main('post',url,header))
 

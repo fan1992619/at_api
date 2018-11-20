@@ -1,4 +1,4 @@
-#coding:utf-8
+import json
 class CommontUtil:
     def is_contain(self,str_one,str_two):
         flag=None
@@ -19,10 +19,3 @@ class CommontUtil:
         return cmp(dict_one, dict_two)
 if __name__ == '__main__':
     com=CommontUtil()
-    dict_one={
-        'code':0
-    }
-    dict_two={
-        'code':0
-    }
-    print com.is_equal_dict(dict_one,dict_two)

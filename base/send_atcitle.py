@@ -14,6 +14,19 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from data import data_config_article
 import json
 import time
+header_at = {
+    'Host': 'api.at.top',
+    'Connection': 'Keep-Alive',
+    'Accept-Encoding': 'gzip',
+    'User-Agent': 'okhttp/3.8.1',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjY5NjkzMiwiZXhwIjoxNTc0MjMyOTMyLCJuYmYiOjE1NDI2OTY5MzIsImp0aSI6IlNxN01BajR3QUZIU0pUcHMiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.KDlYlvi7z50fKGSsIywDOhRhqZdgxtrkhWwqbtzz2iw',
+    'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
+    'getuiclientid': '5b9a0d6f110d2b136f9ca135d93fad06',
+    'platform': 'android',
+    'userid': '33',
+    'version': '2.1.0'
+}
+num = random.randint(1, 18)
 str_182='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTUzMzg4NTIyNCwiZXhwIjoxNTY1NDIxMjI0LCJuYmYiOjE1MzM4ODUyMjQsImp0aSI6Im80ZmFKVnhlMUxXSmlmdksiLCJzdWIiOjMxLCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.UCbB_ilaw1xu92aB4oQ5k_dJXT6tj-xHVGtO5-NiHTM'
 str_187='Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTUzMzg4NDY0NywiZXhwIjoxNTY1NDIwNjQ3LCJuYmYiOjE1MzM4ODQ2NDcsImp0aSI6ImlGTlJkTTRSVk90S3ZhWTgiLCJzdWIiOjMzLCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.uMkAI8VR6lZOCr27znRYLfkZRazvpvxDHjc8wBi1xPw'
 class SendArticles():
@@ -69,7 +82,6 @@ class SendArticles():
         tables = data.sheets()[0]
         col = int(data_config_article.get_content())
         content =tables.cell_value(row, col)
-        # print(title)
         return content
     #获取文章图片的url
     def open_img_url(self,row):
@@ -98,196 +110,120 @@ class SendArticles():
             if i<1:
                 continue
             return self.open_url(i)
-    #测试插入图片
-    def img_test(self):
-        listurl = ['https://contestimg.wish.com/api/webimage/59647c7e7baa287c180fa0e0-3-original.jpg',
-                   'https://contestimg.wish.com/api/webimage/59647c7e7baa287c180fa0e0-original.jpg', ]
-
-        # 根据图片链接列表，把图片保存到本地
-        i = 0
-        for url in listurl:
-            f = open(str(i) + '.jpg', "wb")  # 打开文件
-            req = urllib.request.urlopen(url)
-            buf = req.read()  # 读出文件
-            f.write(buf)  # 写入文件
-            i = i + 1
-        # 将图片一次导入到表格的1，2...行
-        data = load_workbook('../appium_android/pict.xlsx')
-        ws = data.active
-        img = Image('../appium_android/0.jpg')
-        ws.add_image(img, 'E2')
-        data.save('../dataconfig/title.xlsx')
-    #发送文章
-    def send_atricl(self):
+    #发布项目文章
+    def send_article_project(self):
+        num = random.randint(1, 18)
         #随机获取项目id
         articles=[22,23,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,1503]
         random_articles_num=random.choice(articles)
-        #随机获取主题id
+        self.spider_article()
+        link=self.open_url(num)
+        title=self.open_title(num)
+        #发布文章到项目
+        url_test_project='https://api.at.top/v1/projects/{0}/articles'.format(random_articles_num)
+        data={
+            'type': '1',
+            'link': '{0}'.format(link),
+            'title':'{0}'.format(title)
+            # 'timestamp': '1537583500',
+            # 'signature': '43fa84601a94e0b5920b5ce7a73c680f'
+        }
+        res= requests.post(url=url_test_project, data=data, headers=header_at, verify=False).json()
+        time.sleep(3)
+        print("发布项目文章",res)
+        res=json.dumps(res)
+        return res
+    #发布主题文章
+    def send_article_subject(self):
+        num = random.randint(1, 18)
+        # 随机获取主题id
         subjects = [1, 2, 3, 4, 5, 6]
-        random_subject=random.choice(subjects)
+        random_subject = random.choice(subjects)
         self.spider_article()
-        data = xlrd.open_workbook('../dataconfig/title.xlsx')
-        tables = data.sheets()[0].nrows
-        print(tables)
-        for i in range(tables):
-            if i<1:
-                continue
-            link=self.open_url(i)
-            title=self.open_title(i)
-            url='https://api.at.top/v1/projects/22/articles'
-            #发布文章到项目
-            url_test_project='http://api.test.initialvc.com/v1/projects/{0}/articles'.format(random_articles_num)
-            #发布文章到主题
-            url_test_subject='http://api.test.initialvc.com/v1/subjects/{0}/articles'.format(random_subject)
-            data={
-                'type': '1',
-                'link': '{0}'.format(link),
-                'title':'{0}'.format(title)
-                # 'timestamp': '1537583500',
-                # 'signature': '43fa84601a94e0b5920b5ce7a73c680f'
-            }
-            header_at={
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': '764',
-                'Host': 'api.at.top',
-                'Connection': 'Keep-Alive',
-                'Accept-Encoding': 'gzip',
-                'User-Agent': 'okhttp/3.8.1',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC5pbml0aWFsdmMuY29tXC92MVwvYWNjb3VudFwvc2lnbmluIiwiaWF0IjoxNTM3NTMxMDk3LCJleHAiOjE1NjkwNjcwOTcsIm5iZiI6MTUzNzUzMTA5NywianRpIjoiSk9VaUN2QVZBMVNGa05iZyIsInN1YiI6IjMzIiwicHJ2IjoiYzhlZTFmYzg5ZTc3NWVjNGM3Mzg2NjdlNWJlMTdhNTkwYjZkNDBmYyJ9.FExRUmpERoEDDUtFa666lxHjQhbBeD4TQKtH_sa6Jrw',
-                'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
-                'getuiclientid': '330ccf5988efd42e629f88e533488d4e',
-                'platform': 'android',
-                'userid': '33',
-                'version': '2.2.0'
-            }
-            header_test={
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': '325',
-                'Host': 'api.test.initialvc.com',
-                'Accept-Encoding': 'gzip',
-                'User-Agent': 'okhttp/3.8.1',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC5pbml0aWFsdmMuY29tXC92MVwvYWNjb3VudFwvc2lnbmluIiwiaWF0IjoxNTQwNzk2OTk5LCJleHAiOjE1NzIzMzI5OTksIm5iZiI6MTU0MDc5Njk5OSwianRpIjoibGI4b241TTBCTno4V0JCNiIsInN1YiI6IjMzIiwicHJ2IjoiYzhlZTFmYzg5ZTc3NWVjNGM3Mzg2NjdlNWJlMTdhNTkwYjZkNDBmYyJ9.BHLtxjFJm-FlZePx9nZo6KMzQmURkwJfsFByBOsqDSY',
-                'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
-                'getuiclientid': '0419d93bf4806aa84c2187927d8f66bc',
-                'platform': 'android',
-                'userid': '33',
-                'version': '1.2.0',
-                'Connection': 'keep-alive'
-            }
-            #发布文章到主题
-            res=requests.post(url=url_test_subject,data=data,headers=header_test,verify=False).json()
-            #发布文章到项目
-            # res = requests.post(url=url_test_project, data=data, headers=header_test, verify=False).json()
-            print ('第%d次' % i,res)
-    #发布提问
-    def send_question(self):
+        link = self.open_url(num)
+        title = self.open_title(num)
+        url_test_subject = 'https://api.at.top/v1/subjects/{0}/articles'.format(random_subject)
+        data = {
+            'type': '1',
+            'link': '{0}'.format(link),
+            'title': '{0}'.format(title)
+            # 'timestamp': '1537583500',
+            # 'signature': '43fa84601a94e0b5920b5ce7a73c680f'
+        }
+        res = requests.post(url=url_test_subject, data=data, headers=header_at, verify=False).json()
+        time.sleep(3)
+        print("发布主题文章",res)
+        res = json.dumps(res)
+        return res
+    #发布提问到项目
+    def send_question_project(self):
+        num = random.randint(1, 18)
         self.spider_article()
-        data = xlrd.open_workbook('../dataconfig/title.xlsx')
-        tables = data.sheets()[0].nrows
         #随机获取项目id
         project_id=[22,23,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,1503]
         random_project_num=random.choice(project_id)
+        content = self.open_content(num)
+        title = self.open_title(num)+"?"
+        url_question_project = 'https://api.at.top/v1/question'
+        data_project={
+            'project_id': random_project_num,
+            'is_anonymous': 1,
+            'description': '{0}'.format(content),
+            'title': '{0}'.format(title)
+        }
+        res = requests.post(url=url_question_project, data=data_project, headers=header_at, verify=False).json()
+        print("发布提问到项目",res)
+        res = json.dumps(res)
+        return res
+    #发布提问到主题
+    def send_question_subject(self):
+        num = random.randint(1, 18)
+        self.spider_article()
         #随机获取主题id
         subjects = [1, 2, 3, 4, 5, 6]
         random_subject=random.choice(subjects)
-        print(tables)
-        for i in range(tables):
-            if i < 1:
-                continue
-            content = self.open_content(i)
-            title = self.open_title(i)+"?"
-            url_question_project = 'http://api.test.initialvc.com/v1/question'
-            url_question_subject = 'http://api.test.initialvc.com/v1/question/subject'
-            data_subject = {
-                'subject_id':random_subject,
-                'is_anonymous':1,
-                'description': '{0}'.format(content),
-                'title': '{0}'.format(title)
-            }
-            data_project={
-                'project_id': random_project_num,
-                'is_anonymous': 1,
-                'description': '{0}'.format(content),
-                'title': '{0}'.format(title)
-            }
-            header_at = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': '764',
-                'Host': 'api.at.top',
-                'Connection': 'Keep-Alive',
-                'Accept-Encoding': 'gzip',
-                'User-Agent': 'okhttp/3.8.1',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC5pbml0aWFsdmMuY29tXC92MVwvYWNjb3VudFwvc2lnbmluIiwiaWF0IjoxNTM3NTMxMDk3LCJleHAiOjE1NjkwNjcwOTcsIm5iZiI6MTUzNzUzMTA5NywianRpIjoiSk9VaUN2QVZBMVNGa05iZyIsInN1YiI6IjMzIiwicHJ2IjoiYzhlZTFmYzg5ZTc3NWVjNGM3Mzg2NjdlNWJlMTdhNTkwYjZkNDBmYyJ9.FExRUmpERoEDDUtFa666lxHjQhbBeD4TQKtH_sa6Jrw',
-                'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
-                'getuiclientid': '330ccf5988efd42e629f88e533488d4e',
-                'platform': 'android',
-                'userid': '33',
-                'version': '2.2.0'
-            }
-            header_test={
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': '325',
-                'Host': 'api.test.initialvc.com',
-                'Accept-Encoding': 'gzip',
-                'User-Agent': 'okhttp/3.8.1',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC5pbml0aWFsdmMuY29tXC92MVwvYWNjb3VudFwvc2lnbmluIiwiaWF0IjoxNTQwNzk2OTk5LCJleHAiOjE1NzIzMzI5OTksIm5iZiI6MTU0MDc5Njk5OSwianRpIjoibGI4b241TTBCTno4V0JCNiIsInN1YiI6IjMzIiwicHJ2IjoiYzhlZTFmYzg5ZTc3NWVjNGM3Mzg2NjdlNWJlMTdhNTkwYjZkNDBmYyJ9.BHLtxjFJm-FlZePx9nZo6KMzQmURkwJfsFByBOsqDSY',
-                'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
-                'getuiclientid': '0419d93bf4806aa84c2187927d8f66bc',
-                'platform': 'android',
-                'userid': '33',
-                'version': '1.2.0',
-                'Connection': 'keep-alive'
-            }
-            # #提问到主题
-            res = requests.post(url=url_question_subject, data=data_subject, headers=header_test, verify=False).json()
-            #提问到项目
-            # res = requests.post(url=url_question_project, data=data_project, headers=header_test, verify=False).json()
-            print('第%d次' % i, res)
-    #api发布评论
+        content = self.open_content(num)
+        title = self.open_title(num)+"?"
+        url_question_subject = 'https://api.at.top/v1/question/subject'
+        data_subject = {
+            'subject_id':random_subject,
+            'is_anonymous':1,
+            'description': '{0}'.format(content),
+            'title': '{0}'.format(title)
+        }
+        res = requests.post(url=url_question_subject, data=data_subject, headers=header_at, verify=False).json()
+        print("发布提问到主题",res)
+        res = json.dumps(res)
+        return res
+    #回答api发布评论
     def api_commit_deep(self):
-        for i in range(6):
-            num = random.randint(1, 15)
-            comment_content=self.open_content(num)
-            header_at = {
-                'Host': 'api.at.top',
-                'Connection': 'Keep-Alive',
-                'Accept-Encoding': 'gzip',
-                'User-Agent': 'okhttp/3.8.1',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjAxMDM2OCwiZXhwIjoxNTczNTQ2MzY4LCJuYmYiOjE1NDIwMTAzNjgsImp0aSI6Im1zcERIMWVaTDM5SG9mazkiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.0s8qGjniMd3INLbE9rg0NBiKXyp_b1K76M8ZyPrd_ZA',
-                'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
-                'getuiclientid': '5b9a0d6f110d2b136f9ca135d93fad06',
-                'platform': 'android',
-                'userid': '33',
-                'version': '1.2.0'
-            }
-            #获取评论的内容
-            comment_data={
-                'content':comment_content
-            }
-            # deep_id=[45717909825137196,42810485585750572]
-            # deep_id_num=random.choice(deep_id)
-            time.sleep(5)
-            url_comment='https://api.at.top/v1/comment/answer/45717909825137196'
+        num = random.randint(1, 10)
+        self.spider_article()
+        comment_content=self.open_content(num)
+        #获取评论的内容
+        comment_data={
+            'content':comment_content
+        }
+        time.sleep(5)
+        url_comment='https://api.at.top/v1/comment/answer/45717909825137196'
+        res=requests.post(url=url_comment, headers=header_at, data=comment_data).json()
+        if res['code']==-204 or res['code']==-2:
+            url_comment = 'https://api.at.top/v1/comment/answer/42810485585750572'
             res=requests.post(url=url_comment, headers=header_at, data=comment_data).json()
-            # print(res)
-            # send_comment=requests.post(url=url_comment,headers=header_at,data=comment_data).json()
-            if res['code']==-204 or res['code']==-2:
-                url_comment = 'https://api.at.top/v1/comment/answer/42810485585750572'
-                res=requests.post(url=url_comment, headers=header_at, data=comment_data).json()
-                # print("res",res)
-            else:
-                print("res", res)
+        else:
+            pass
+        return json.dumps(res)
 if __name__ == '__main__':
     send = SendArticles()
-    print(send.open_url(3))
-    # send.open_title(3)
-    # send.spider_article()
+    # print(send.open_url(3))
+    # print(send.open_title(3))
     # send.spider_images()
     # print(send.articles_url())
     # print(send.open_img_url(3))
     # print(send.open_content(3))
-    # send.spider_img()
-    # send.send_atricl()
-    # send.send_question()
+    # send.send_article_subject()
+    # send.send_atricle_project()
+    send.send_question_project()
+    send.send_question_subject()
     # send.api_commit_deep()
     # send.send_get()

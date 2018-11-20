@@ -1,6 +1,5 @@
-#coding:utf-8
 from util.operation_excel import OperationExcel
-import data_config
+from data import data_config
 from util.operation_json import OperetionJson
 class GetData:
 	def __init__(self):
@@ -23,19 +22,33 @@ class GetData:
 	def get_header_value(self):
 		#api.at.top
 		header = {
-			# 'Accept': '*/*',
-			'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTUzMTgxMTk5MCwiZXhwIjoxNTYzMzQ3OTkwLCJuYmYiOjE1MzE4MTE5OTAsImp0aSI6ImFFRmgybk91UkhzbTZLWmIiLCJzdWIiOjMzLCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.B6SMVdEN0JpzOTZEH87C1MXf5LheHzTalYouY1KrTy8',
-			# 'Content-Type': 'application/x-www-form-urlencoded'
+			'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjAxMDM2OCwiZXhwIjoxNTczNTQ2MzY4LCJuYmYiOjE1NDIwMTAzNjgsImp0aSI6Im1zcERIMWVaTDM5SG9mazkiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.0s8qGjniMd3INLbE9rg0NBiKXyp_b1K76M8ZyPrd_ZA'
 		}
 		return header
+	#获取模块的名称
+	def get_request_name(self,row):
+		col=int(data_config.get_request_name())
+		request_name=self.opera_excel.get_cell_value(row,col)
+		return request_name
 	#是否携带header
 	def is_header(self,row):
 		col = int(data_config.get_header())
 		header = self.opera_excel.get_cell_value(row,col)
-		# if header =='yes':
-		# 	header=
-		# else:
-		# 	return None
+		if header =='yes':
+			header= {
+				'Host': 'api.at.top',
+				'Connection': 'Keep-Alive',
+				'Accept-Encoding': 'gzip',
+				'User-Agent': 'okhttp/3.8.1',
+				'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjY5NjkzMiwiZXhwIjoxNTc0MjMyOTMyLCJuYmYiOjE1NDI2OTY5MzIsImp0aSI6IlNxN01BajR3QUZIU0pUcHMiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.KDlYlvi7z50fKGSsIywDOhRhqZdgxtrkhWwqbtzz2iw',
+				'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
+				'getuiclientid': '5b9a0d6f110d2b136f9ca135d93fad06',
+				'platform': 'android',
+				'userid': '33',
+				'version': '2.1.0'
+			}
+		else:
+			return None
 		return header
 	#获取请求方式
 	def get_request_method(self,row):
@@ -70,7 +83,7 @@ class GetData:
 	def get_expcet_data(self,row):
 		col = int(data_config.get_expect())
 		expect = self.opera_excel.get_cell_value(row,col)
-		expect = expect.encode('utf-8')
+		# expect = expect.encode('utf-8')
 		# print type(expect)
 		if expect == '':
 			return None
@@ -86,4 +99,4 @@ class GetData:
 		return ID
 if __name__ == '__main__':
 	get_data=GetData()
-	print(get_data.get_expcet_data(1))
+	print(get_data.write_result(1,"'code': 0"))

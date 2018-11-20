@@ -73,4 +73,6 @@ class OperationExcel:
 
 if __name__ == '__main__':
 	opers = OperationExcel()
-	print (opers.write_value(2,11,'pass'))
+	for i in range(9):
+		i=i+1
+		print (opers.write_value(i,10,"'code': 0"))

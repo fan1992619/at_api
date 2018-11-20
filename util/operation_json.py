@@ -9,7 +9,7 @@ class OperetionJson:
 		self.data = self.read_data()
 	#读取json文件
 	def read_data(self):
-		with open(self.file_path) as fp:
+		with open(self.file_path,'rb') as fp:
 			data = json.load(fp)
 			return data
 	#根据关键字获取数据
