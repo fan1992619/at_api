@@ -23,7 +23,7 @@ class RunTest:
 		res = None
 		rows_count = self.data.get_case_lines()
 		for i in range(1,rows_count):
-			if i<38:
+			if i<1:
 				continue
 			is_run = self.data.get_is_run(i)
 			if is_run:
@@ -47,14 +47,18 @@ class RunTest:
 						res=self.article.send_article_project()
 						if self.com_util.is_contain(expect,res):
 							self.data.write_result(i,'pass')
+							print('第%d次' % i, id,'pass')
 						else:
 							self.data.write_result(i, res)
+							print('第%d次' % i, id,res)
 					elif self.com_util.is_contain("发布主题文章",request_name):
 						res=self.article.send_article_subject()
 						if self.com_util.is_contain(expect,res):
 							self.data.write_result(i,'pass')
+							print('第%d次' % i, id,'pass')
 						else:
 							self.data.write_result(i, res)
+							print('第%d次' % i, id,res)
 				else:
 					# print(type(expect))
 					# print(expect)
@@ -62,19 +66,21 @@ class RunTest:
 					if header == 'no':
 						res = self.run_method.run_main(method,url,header,request_data)
 						# print(type(res))
-						print ('第%d次' %i,id)
 						if self.com_util.is_contain(expect,res):
 							self.data.write_result(i,'pass')
+							print('第%d次' % i, id,'pass')
 						else:
 							# print('第%d次' % i, id)
 							self.data.write_result(i, res)
+							print('第%d次' % i, id, res)
 					else:
-						print('第%d次' % i, id)
 						res=self.run_method.run_main(method,url,header,request_data)
 						if self.com_util.is_contain(expect,res):
 							self.data.write_result(i,'pass')
+							print('第%d次' % i, id,'pass')
 						else:
 							self.data.write_result(i, res)
+							print('第%d次' % i, id,res)
 					continue
 			else:
 				continue

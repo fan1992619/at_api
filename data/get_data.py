@@ -40,7 +40,7 @@ class GetData:
 				'Connection': 'Keep-Alive',
 				'Accept-Encoding': 'gzip',
 				'User-Agent': 'okhttp/3.8.1',
-				'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjY5NjkzMiwiZXhwIjoxNTc0MjMyOTMyLCJuYmYiOjE1NDI2OTY5MzIsImp0aSI6IlNxN01BajR3QUZIU0pUcHMiLCJzdWIiOiIzMyIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.KDlYlvi7z50fKGSsIywDOhRhqZdgxtrkhWwqbtzz2iw',
+				'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmF0LnRvcFwvdjFcL2FjY291bnRcL3NpZ25pbiIsImlhdCI6MTU0MjcxMDM2MywiZXhwIjoxNTc0MjQ2MzYzLCJuYmYiOjE1NDI3MTAzNjMsImp0aSI6Ijk4ZUtCb2gzaEV1SUE1ckgiLCJzdWIiOiIzMSIsInBydiI6ImM4ZWUxZmM4OWU3NzVlYzRjNzM4NjY3ZTViZTE3YTU5MGI2ZDQwZmMifQ.Ey2Ot4nRgH_fV8Q7D42aKoXH2NzzPYja6bedpBqaXI4',
 				'deviceid': 'ac:c1:ee:c0:33:34-ac:c1:ee:c0:33:34',
 				'getuiclientid': '5b9a0d6f110d2b136f9ca135d93fad06',
 				'platform': 'android',
