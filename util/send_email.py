@@ -34,7 +34,7 @@ class SendEmail:
 
 
     #创建一个主函数，告诉通过了多少，失败了多少
-    def send_main(self,pass_list,fail_list):
+    def send_main(self,pass_list,fail_list,message_list=[]):
         #因为要计算百分比，所以要用浮点类型float
         pass_num=float(len(pass_list))
         fail_num=float(len(fail_list))
@@ -45,7 +45,7 @@ class SendEmail:
         fail_result = "%.2f%%" % (fail_num / count_num * 100)
         user_list = ['498904925@qq.com']
         sub = "接口自动化测试报告"
-        content = "此次一共运行的接口个数为%s个，通过的个数为%s个，失败的个数为%s个，通过率为%s，失败率为%s" %(count_num,pass_num,fail_num,pass_result,fail_result)
+        content = "此次一共运行的接口个数为%s个，通过的个数为%s个，失败的个数为%s个，通过率为%s，失败率为%s，失败的详情信息%s" %(count_num,pass_num,fail_num,pass_result,fail_result,message_list)
         self.send_mail(user_list, sub, content)
 if __name__ == '__main__':
     sen=SendEmail()
